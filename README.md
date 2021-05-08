@@ -13,7 +13,7 @@ Before we had Prompt-O we had to hand select emojis
 # Add Prompt-o to your server 
 
 
-[id]: https://discord.com/api/oauth2/authorize?client_id=838945890218934312&permissions=0&redirect_uri=http%3A%2F%2Flocalhost%3A5000&scope=bot "Add Prompt-o"
+ https://discord.com/api/oauth2/authorize?client_id=838945890218934312&permissions=0&redirect_uri=http%3A%2F%2Flocalhost%3A5000&scope=bot
 
 note the channel weekly prompt needs to be added 
 
