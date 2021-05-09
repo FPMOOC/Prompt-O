@@ -2,8 +2,7 @@ const Discord = require("discord.js");
 const fetch = require("node-fetch");
 const cron = require("cron");
 const bot = new Discord.Client();
-import { poemToken, discordToken } from "./config.js";
-
+const config = require("./config");
 const prefix = "!";
 
 var allowedEmoji = Array(
@@ -73,7 +72,6 @@ issue
 returns an unfifiled promise and string is every possible string
 
 */
-
 async function randPoem() {
 	let getPoem = async () => {
 		//make API call
@@ -81,7 +79,7 @@ async function randPoem() {
 		var term = terms[rand(0, terms.length - 1)];
 		let result = await fetch(
 			"https://www.stands4.com/services/v2/poetry.php?uid=8843&tokenid=" +
-				poemToken +
+				config.POEM_TOKEN +
 				"&term=" +
 				term +
 				"&format=json"
@@ -97,6 +95,7 @@ async function randPoem() {
 	console.log(poem.result[0].poem);
 	return poem.result[rand(0, poem.result.length - 1)].poem;
 }
+
 /*
 returns random number from low to high
 */
@@ -127,6 +126,7 @@ UniqueSetOfEmoji = function () {
 
 /*happens when the bot is messaged */
 
+var lastcmd = "";
 bot.on("message", async (msg) => {
 	//if our message doesnt start with our defined prefix, dont go any further into function
 
@@ -143,17 +143,21 @@ bot.on("message", async (msg) => {
 		console.log("no prefix");
 		return;
 	}
-	randPoem();
 
 	//slices off prefix from our message, then trims extra whitespace, then returns our array of words from the message
 	const args = msg.content.slice(prefix.length).trim().split(" ");
 
 	//splits off the first word from the array, which will be our command
-	const command = args.shift().toLowerCase();
-
+	const command = args[0].toLowerCase();
 	// check command
 	if (command == "emoji") {
+		var count = args[1] - 1;
+		while (count > 0) {
+			msg.reply(randomEmoji());
+			count--;
+		}
 		msg.reply(randomEmoji());
+		lastcmd = randomEmoji();
 	}
 	if (command == "poem") {
 		var string = randPoem();
@@ -161,8 +165,30 @@ bot.on("message", async (msg) => {
 		msg.reply(" Poem - \n  " + string);
 	}
 	if (command == "prompt") {
+		var count = args[1] - 1;
+		if (count > 5) {
+			msg.reply("ok be patient");
+		}
+		while (count > 0) {
+			msg.reply(UniqueSetOfEmoji());
+			count--;
+		}
 		msg.reply(UniqueSetOfEmoji());
+		lastcmd = UniqueSetOfEmoji();
 	}
+
+	if (command == "num") {
+		msg.reply(rand(0, args[1]));
+		lastcmd = rand(0, args[1]);
+	}
+	if (command == "!") {
+		if (lastcmd) {
+			msg.reply(lastcmd);
+		} else {
+			msg.reply("IDK what the last command was sorry :(");
+		}
+	}
+
 	/*
 	setTimeout(function () {
 		// in leftToEight() milliseconds run this:
@@ -196,5 +222,5 @@ function sendMessageToServer(ChannelToSend) {
 	);
 	channel.send(UniqueSetOfEmoji("@bot-testing"));
 }
-//?? idk what this does I think it resets the 8 hours
-bot.login(discordToken);
+
+bot.login(config.DISCORD_TOKEN);
