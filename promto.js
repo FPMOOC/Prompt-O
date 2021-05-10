@@ -207,15 +207,18 @@ bot.on("message", async (msg) => {
 /*
 send message to weekly prompt 
 not yet sent or schedialed 
-
-bot.on("ready", () => {
-	let schedualMessage = new cron.CronJob(
-		"00 * 10,* * * 4",
-		sendMessageToServer("weekly-prompts")
-	);
-	schedualMessage.start();
-});
 */
+bot.on("ready", () => {
+	var d = new Date();
+	var n = d.getDay();
+
+	if (n == 4) {
+		sendMessageToServer("weekly-prompts");
+	} else {
+		console.log("Not sending message today");
+	}
+});
+
 function sendMessageToServer(ChannelToSend) {
 	const channel = bot.channels.cache.find(
 		(channel) => channel.name === ChannelToSend
