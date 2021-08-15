@@ -1,10 +1,21 @@
 const Discord = require("discord.js");
 const fetch = require("node-fetch");
 const cron = require("cron");
-const bot = new Discord.Client();
-const config = require("./config");
-const prefix = "!";
+const bot = new Discord.Client(); //actual client bot
+const config = require("./config"); //config file
+const prefix = "!"; //command prefix !command
 
+/*
+ToDo:
+functions into seperate files
+more comments
+Cron jobs 
+custom emojis for server possible
+
+*/
+
+
+// Promptos emoji diary (be nice he's shy about it man)
 var allowedEmoji = Array(
 	":relieved:",
 	":smiling_face_with_tear:",
@@ -50,6 +61,7 @@ var allowedEmoji = Array(
 
 /*
 returns a random emoji from allowedEmoji list
+mostly a great way to test prompto
 */
 randomEmoji = function () {
 	console.log(Math.floor(Math.random() * allowedEmoji.length));
@@ -58,6 +70,7 @@ randomEmoji = function () {
 };
 
 /*
+not in use
 resets timing function
 */
 function leftToEight() {
@@ -65,11 +78,10 @@ function leftToEight() {
 	return -d + d.setHours(8, 0, 0, 0);
 }
 
+
+
 /*
 returns random string from stands4 api for poems 
-
-issue
-returns an unfifiled promise and string is every possible string
 
 */
 async function randPoem() {
@@ -97,7 +109,7 @@ async function randPoem() {
 }
 
 /*
-returns random number from low to high
+returns random number from ints min to max
 */
 function rand(min, max) {
 	var offset = min;
@@ -219,6 +231,7 @@ bot.on("ready", () => {
 	}
 });
 
+// sends the message to the specific channel
 function sendMessageToServer(ChannelToSend) {
 	const channel = bot.channels.cache.find(
 		(channel) => channel.name === ChannelToSend
