@@ -1,6 +1,5 @@
-# Prompt-O
+# Poll-O
 
-Prompt-o is a Discord bot for the creative use of Florida Polytechnic students in the Media club server. These prompts pick three emojis and the students create art based on the prompts. Before we had Prompt-O we had to hand select emojis 
 
 # Example 
 ![image](https://user-images.githubusercontent.com/45106564/117551644-1fd84100-b015-11eb-8deb-b59f86c4dac0.png)
